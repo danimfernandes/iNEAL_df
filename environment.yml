@@ -1,0 +1,14 @@
+name: ineal
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - admixtools
+  - admixture
+  - eigensoft
+  - notebook
+  - numpy
+  - openjdk
+  - pandas
+  - plink
+  - wget
