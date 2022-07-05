@@ -5,10 +5,11 @@ channels:
 dependencies:
   - admixtools
   - admixture
+  - bcftools
   - eigensoft
   - notebook
   - numpy
   - openjdk
   - pandas
   - plink
-  - wget
+  - tabix
