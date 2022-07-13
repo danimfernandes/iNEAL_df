@@ -8,9 +8,9 @@
 
 This repo contains the materials for the practical sessions in the CA19141 [iNEAL](https://inealcost.inantro.hr/about/) Training School.
 
-To use these materials, you can click the badge [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/admixVIE/iNEAL/HEAD), which will create a virtual machine containing the tools and data used in the practical sessions.
+To use these materials, you can click the badge [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/admixVIE/iNEAL/HEAD), which will create an online virtual machine containing the tools and data used in the practical sessions.
 
-Or you can download this repo and install the dependencies with [conda](https://docs.conda.io/en/latest/) in your local machine using the following commands. 
+Or you can download this repo and install the dependencies with [minconda](https://docs.conda.io/en/latest/miniconda.html) in your local machine using the following commands. To install `miniconda`, you can follow the instruction [here](https://conda.io/projects/conda/en/latest/user-guide/install/index.html).
 ```
 git clone https://github.com/admixVIE/iNEAL
 cd iNEAL
