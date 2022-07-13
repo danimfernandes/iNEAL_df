@@ -1,0 +1,41 @@
+name: ubuntu-build
+
+on: ['push', 'pull_request']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v3
+    - name: Add micromamba to system path
+      uses: mamba-org/provision-with-micromamba@main
+      with:
+        environment-name: ineal
+        activate-environment: ineal
+        environment-file: environment.yml
+    - name: Test bcftools
+      run: |
+        cd ./notebooks/vcf
+        micromamba run -n ineal bcftools view ./data/chr21.YRI.CEU.vcf.gz -S ./data/YRI.list | micromamba run -n ineal bgzip -c > chr21.YRI.vcf.gz
+        micromamba run -n ineal bcftools view ./data/chr21.YRI.CEU.vcf.gz -S ./data/CEU.list | micromamba run -n ineal bgzip -c > chr21.CEU.vcf.gz
+        micromamba run -n ineal bcftools view chr21.YRI.vcf.gz -f PASS -m 2 -M 2 -v snps | micromamba run -n ineal bgzip -c > chr21.YRI.biallelic.snps.vcf.gz
+        micromamba run -n ineal bcftools view chr21.CEU.vcf.gz -f PASS -m 2 -M 2 -v snps | micromamba run -n ineal bgzip -c > chr21.CEU.biallelic.snps.vcf.gz
+        cd ../..
+    - name: Test SPrime
+      run: |
+        cd ./notebooks/introgression
+        wget https://faculty.washington.edu/browning/sprime.jar
+        micromamba run -n ineal java -Xmx1g -jar sprime.jar gt=./data/chr21.YRI.CEU.biallelic.snps.vcf.gz outgroup=./data/YRI.list map=./data/plink.chr21.GRCh37.map out=chr21.CEU.introgressed
+        micromamba run -n ineal java -Xmx1g -jar sprime.jar gt=./data/chr4.YRI.CEU.TLR.biallelic.snps.vcf.gz outgroup=./data/YRI.list map=./data/plink.chr4.GRCh37.map out=chr4.CEU.TLR.introgressed
+        micromamba run -n ineal python process_sprime_output.py chr21.CEU.introgressed.score chr21.CEU.introgressed.bed
+        micromamba run -n ineal python process_sprime_output.py chr4.CEU.TLR.introgressed.score chr4.CEU.TLR.introgressed.bed
+        cd ../..
+    - name: Test selscan
+      run: |
+        cd ./notebooks/selection
+        git clone https://github.com/szpiech/selscan
+        ./selscan/bin/linux/selscan --vcf ./data/chr2.CEU.LCT.flank.1mb.biallelic.snps.vcf.gz --map ./data/chr2.CEU.LCT.flank.1mb.biallelic.snps.map --ihs
+        cd ../..
