@@ -6,10 +6,13 @@ dependencies:
   - admixtools
   - admixture
   - bcftools
+  - clustalo
   - eigensoft
+  - nano
   - notebook
   - numpy
   - openjdk
   - pandas
   - plink
+  - raxml
   - tabix
