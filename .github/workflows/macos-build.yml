@@ -16,6 +16,27 @@ jobs:
         environment-name: ineal
         activate-environment: ineal
         environment-file: environment.yml
+    - name: Test plink
+      run: |
+        cd ./notebooks/adaptiveIntro
+        echo rs11466640 > extract_SNPsTLR
+        echo rs5743563 >> extract_SNPsTLR
+        echo rs5743560 >> extract_SNPsTLR
+        echo rs11725779 >> extract_SNPsTLR
+        micromamba run -n ineal plink --bfile iNEAL_TLRadapInto --extract extract_SNPsTLR --make-bed --out iNEAL_TLRadapInto_subset
+        micromamba run -n ineal plink --bfile iNEAL_TLRadapInto_subset --freq --family
+        cd ../..
+    - name: Test qpDstat
+      run: |
+        cd ./notebooks/f4
+        micromamba run -n ineal qpDstat -p f4_parameters_QinStoneking_1a
+        micromamba run -n ineal qpDstat -p f4_parameters_QinStoneking_1b
+        micromamba run -n ineal qpDstat -p f4_parameters_QinStoneking_1c
+        micromamba run -n ineal qpDstat -p f4_parameters_Hajdinjak_2a
+        micromamba run -n ineal qpDstat -p f4_parameters_Hajdinjak_2b
+        micromamba run -n ineal qpDstat -p f4_parameters_Mafessoni_3a
+        micromamba run -n ineal qpDstat -p f4_parameters_Mafessoni_3b
+        cd ../..
     - name: Test bcftools
       run: |
         cd ./notebooks/vcf
