@@ -14,7 +14,9 @@ So first, to expedite the analysis, we should isolate the SNPs we want to look a
     rs5743560
     rs11725779
 
-We now need to create a new text file and add this information to it.
+We now need to create a new text file and add these 4 SNP IDs to it, with nano, and then pasting those "rs" codes inside.
+
+    nano extract_SNPsTLR
 
 Now, we can use the following command with the software PLINK to reduce our huge dataset into only these SNPs:
 
@@ -51,7 +53,7 @@ We can now use PLINK to calculate the allele frequencies of the 4 SNPs we isolat
 
     plink --bfile iNEAL_TLRadapInto_subset --freq --family
 
-Let's now open the output file and understand what each column means:
+Let's now open the output file:
 
     CHR          SNP     CLST                           A1   A2      MAF    MAC  NCHROBS
     4       rs11466640   Altai_Neanderthal.DG           A    G        1      2        2 
@@ -59,5 +61,16 @@ Let's now open the output file and understand what each column means:
     4       rs11466640   CEU.SG                         A    G   0.1616     32      198 
     4       rs11466640   Chagyrskaya_Neanderthal.SG     A    G        1      2        2 
     (...)
+
+And understand what each column means:
+
+    CHR - chromosome
+    SNP - SNP ID
+    CLST - "cluster", or population ID
+    A1 - Allele 1
+    A2 - Allele 2
+    MAF - Minor allele frequency (== frequency of A1)
+    MAC - Minor allele counts (A1 counts)
+    NCHROBS - Number of chromosome observations (number of chromosomes with data)
 
 Now, to help visualize and interpret the results, we're going to move our data into Excel.
